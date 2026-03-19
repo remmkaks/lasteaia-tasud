@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lasteaia osalustasud — Tartu piirkond 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
+
+  :root {
+    --bg:        #f5f4ef;
+    --surface:   #ffffff;
+    --border:    #d8d6ce;
+    --border2:   #e8e6de;
+    --text:      #1a1917;
+    --muted:     #6b6860;
+    --hint:      #9c9a92;
+    --accent:    #1a1917;
+    --blue:      #1a4a7a;
+    --blue-l:    #dce8f5;
+    --green:     #1a5c3a;
+    --green-l:   #d6eee2;
+    --amber:     #7a4a00;
+    --amber-l:   #faebd0;
+    --coral:     #8a2a10;
+    --coral-l:   #f5ddd5;
+    --pink:      #7a1a4a;
+    --pink-l:    #f0d5e5;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --r: 6px;
+    --r-lg: 10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-mono);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ─── LAYOUT ─── */
+  .page { max-width: 1060px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ─── HEADER ─── */
+  header { margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
+  header h1 {
+    font-family: var(--font-head);
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  header h1 span { color: var(--muted); }
+  .meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; }
+  .meta-item { font-size: 11px; color: var(--muted); }
+  .meta-item strong { color: var(--text); }
+  .badge-new {
+    display: inline-block; font-size: 10px; font-weight: 500; font-family: var(--font-mono);
+    background: var(--amber-l); color: var(--amber);
+    padding: 2px 8px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
+  }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    margin: 40px 0 14px;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* ─── SUMMARY CARDS ─── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 16px 18px;
+  }
+  .card-kov {
+    font-family: var(--font-head); font-size: 13px; font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card-rate {
+    font-size: 22px; font-weight: 500; font-family: var(--font-mono);
+    letter-spacing: -0.02em;
+  }
+  .card-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .card-tag {
+    display: inline-block; font-size: 10px; padding: 2px 7px;
+    border-radius: 3px; margin-top: 8px; font-weight: 500;
+  }
+  .c-blue  { color: var(--blue);  background: var(--blue-l);  }
+  .c-green { color: var(--green); background: var(--green-l); }
+  .c-amber { color: var(--amber); background: var(--amber-l); }
+  .c-coral { color: var(--coral); background: var(--coral-l); }
+  .c-pink  { color: var(--pink);  background: var(--pink-l);  }
+
+  /* ─── TABLES ─── */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-family: var(--font-mono); font-weight: 500; font-size: 11px;
+    text-align: left; padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted); white-space: nowrap;
+  }
+  thead th.r { text-align: right; }
+  tbody tr { transition: background .1s; }
+  tbody tr:hover { background: var(--bg); }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border2);
+    vertical-align: middle;
+  }
+  td.r { text-align: right; font-variant-numeric: tabular-nums; }
+  td.ov { font-family: var(--font-head); font-weight: 600; font-size: 13px; white-space: nowrap; }
+  td.dim { color: var(--muted); font-size: 12px; }
+  .val-best { color: var(--green); font-weight: 500; }
+  .val-worst { color: var(--coral); font-weight: 500; }
+  .tag-s {
+    display: inline-block; font-size: 10px; padding: 1px 6px;
+    border-radius: 3px; margin: 1px; font-weight: 500;
+  }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+  /* ─── TABS ─── */
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+  .tab {
+    font-family: var(--font-mono); font-size: 12px;
+    padding: 5px 14px; border-radius: var(--r);
+    border: 1px solid var(--border); background: transparent;
+    cursor: pointer; color: var(--muted); transition: all .15s;
+  }
+  .tab:hover { border-color: var(--text); color: var(--text); }
+  .tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+  /* ─── BAR ─── */
+  .bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .bar-track { height: 6px; background: var(--border2); border-radius: 3px; flex: 1; min-width: 60px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
+  .bar-lbl { font-size: 11px; color: var(--muted); min-width: 56px; text-align: right; }
+
+  /* ─── DIFF NOTE ─── */
+  .diff-note {
+    margin-top: 10px; padding: 10px 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r); font-size: 12px; color: var(--muted); line-height: 1.6;
+  }
+  .diff-note strong { color: var(--text); }
+
+  /* ─── ALERT BOXES ─── */
+  .alerts { display: flex; flex-direction: column; gap: 12px; margin-top: 0; }
+  .alert {
+    padding: 12px 16px; border-radius: var(--r);
+    border-left: 3px solid; font-size: 12px; line-height: 1.7;
+    background: var(--surface);
+  }
+  .alert strong { display: block; margin-bottom: 2px; font-size: 12px; }
+  .alert-amber { border-color: var(--amber); }
+  .alert-amber strong { color: var(--amber); }
+  .alert-coral { border-color: var(--coral); }
+  .alert-coral strong { color: var(--coral); }
+  .alert-blue  { border-color: var(--blue); }
+  .alert-blue  strong { color: var(--blue); }
+  .alert-green { border-color: var(--green); }
+  .alert-green strong { color: var(--green); }
+  .alert-pink  { border-color: var(--pink); }
+  .alert-pink  strong { color: var(--pink); }
+
+  /* ─── DIVIDER ─── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ─── FOOTER ─── */
+  footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--hint); font-size: 11px; line-height: 1.8; }
+  footer a { color: var(--muted); }
+
+  /* ─── LEGEND ─── */
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .page { padding: 28px 16px 60px; }
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 400px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <h1>Lasteaia osalustasud<br><span>Tartu piirkond — 2026</span></h1>
+    <p style="color:var(--muted);font-size:12px;margin-top:8px;max-width:600px;">
+      Võrdlev ülevaade viie omavalitsuse — Tartu linna, Tartu valla, Kambja valla, Kastre valla ja Luunja valla — munitsipaallasteaedade osalustasudest, toidukorraldusest ja mitmiklapse soodustustest. Alus: kehtivad volikogu määrused seisuga märts 2026.
+    </p>
+    <div class="meta">
+      <div class="meta-item">Uuendatud <strong>märts 2026</strong></div>
+      <div class="meta-item">Töötasu alammäär <strong>886 €/kuu</strong> <span style="color:var(--hint)">(kuni 31.03.2026)</span></div>
+      <div class="meta-item">Alates 01.04.2026: <strong>946 €/kuu</strong></div>
+    </div>
+  </header>
+
+  <!-- SUMMARY CARDS -->
+  <p class="section-label">Osalustasu ühe lapse kohta kuus</p>
+  <div class="cards" id="summary-cards"></div>
+
+  <!-- MAIN RATES TABLE -->
+  <p class="section-label">Põhimäärad ja toidukorraldus</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Omavalitsus</th>
+          <th>Alus</th>
+          <th class="r">Määr</th>
+          <th class="r">1 laps / kuu</th>
+          <th class="r">Toidukulu / päev</th>
+          <th class="r">Kuud / aastas</th>
+        </tr>
+      </thead>
+      <tbody id="rates-tbody"></tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- MULTI-CHILD TAB TABLE -->
+  <p class="section-label">Kogu osalustasu pere laste arvu järgi</p>
+  <div class="tabs" id="tabs"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Omavalitsus</th>
+          <th class="r">Osalustasu / kuu</th>
+          <th class="r">Osalustasu / aasta</th>
+          <th class="r">Toidukulu / aasta *</th>
+          <th class="r">Kokku / aasta</th>
+          <th>Suhteline koormus</th>
+        </tr>
+      </thead>
+      <tbody id="multi-tbody"></tbody>
+    </table>
+  </div>
+  <div id="diff-note" class="diff-note"></div>
+  <p style="font-size:11px;color:var(--hint);margin-top:8px;">* Toidukulu hinnang: 22 tööpäeva × toidukulu/päev × kuude arv. Tartu linnas fikseeritud 2,34 €; Luunjas 2,50 € (Lohkva 2024 hoolekogu otsus); ülejäänutes ligikaudne hinnang ~2,40 €/päev.</p>
+
+  <hr>
+
+  <!-- DISCOUNT STRUCTURE TABLE -->
+  <p class="section-label">Soodustuste struktuur</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Omavalitsus</th>
+          <th class="r">1. laps</th>
+          <th class="r">2. laps</th>
+          <th class="r">3. laps</th>
+          <th class="r">4.+ laps</th>
+          <th>Soodustuse tingimused</th>
+        </tr>
+      </thead>
+      <tbody id="discount-tbody"></tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- SPECIAL NOTES -->
+  <p class="section-label">Olulised erisused</p>
+  <div class="alerts" id="alerts"></div>
+
+  <hr>
+
+  <!-- FOOD TABLE -->
+  <p class="section-label">Toidukorraldus</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Omavalitsus</th>
+          <th>Kes katab</th>
+          <th class="r">Päevamaksumus</th>
+          <th>Arvestuspõhimõte</th>
+        </tr>
+      </thead>
+      <tbody id="food-tbody"></tbody>
+    </table>
+  </div>
+  <div class="diff-note" style="margin-top:12px;">
+    Toidukulu <strong>ei kuulu osalustasu sisse</strong> üheski omavalitsuses — see on alati eraldi lapsevanema kulu. Kõikides omavalitsustes on vähekindlustatud peredele võimalik taotleda nii osalustasu kui toidukulu toetust.
+  </div>
+
+  <hr>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>Allikad ja õiguslik alus</strong></p>
+    <p>Tartu linn: <a href="https://tartu.ee/et/lapsevanema-kulud" target="_blank">tartu.ee/lapsevanema-kulud</a>; <a href="https://tartu.ee/et/kohatasu-soodustus" target="_blank">kohatasu-soodustus</a>. Kohatasu fikseeritud 81 €/kuu alates 01.01.2023 (Tartu Linnavolikogu). 4+ lapse eelnõu saadeti volikokku märts 2026 — ei ole jõustunud.<br>
+    Tartu vald: RT IV, 23.01.2026, 13 — "Tartu valla lasteaedades osalustasu määra kehtestamine ning tasumise kord" (jõust. 01.02.2026).<br>
+    Kambja vald: <a href="https://www.kambja.ee/alusharidus" target="_blank">kambja.ee/alusharidus</a>.<br>
+    Kastre vald: Kastre Vallavolikogu määrus (RT IV, 15.12.2023, 11); <a href="https://www.laanelill.edu.ee/vastuvott/" target="_blank">laanelill.edu.ee</a> (viide kehtivale määrusele 2026. aasta jaanuari muudatustega).<br>
+    Luunja vald: Luunja Vallavolikogu 30.05.2024 nr 5; <a href="https://lohkva.edu.ee/lapsevanemale/" target="_blank">lohkva.edu.ee</a>.<br>
+    Töötasu alammäär: RT I, 21.12.2024, 26 (886 €/kuu, jõust. 01.01.2025); uus 946 €/kuu kokkulepe jõustub 01.04.2026.<br><br>
+    Käesolev leht on informatiivne kokkuvõte. Täpse ja ajakohase teabe saamiseks pöörduge vastava omavalitsuse haridusosakonda.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+const KOV = [
+  {
+    id: "tartu-linn",
+    name: "Tartu linn",
+    colorClass: "c-blue",
+    barColor: "#1a4a7a",
+    base: 81.00,
+    basisText: "Fikseeritud (alates 01.01.2023)",
+    rateText: "—",
+    food: 2.34,
+    foodText: "2,34 € (kinnitatud)",
+    months: 12,
+    monthsNote: "12",
+    discountMode: "noorim",
+    rates: [1.00, 0.50, 0.00, 0.00],
+    discountLabels: ["100% (noorimast)", "50% (vanemast)", "0% — tasuta", "0% — tasuta¹"],
+    discountNote: "¹ 4+ lapse eelnõu volikogus — ei ole veel jõustunud.",
+    condText: "Laps + ≥1 vanem registreeritud Tartu linnas. Erinevatele aadressitele tuleb taotlus esitada haridusosakonda.",
+    foodWho: "Lapsevanem 100%",
+    foodCalc: "Tegeliku kohaloleku järgi. Teavitada vähemalt tööpäev varem kl 15:00. Hilinenud teavitusel tasutakse hommikusöök.",
+  },
+  {
+    id: "tartu-vald",
+    name: "Tartu vald",
+    colorClass: "c-green",
+    barColor: "#1a5c3a",
+    base: 70.88,
+    basisText: "8% töötasu alammäärast",
+    rateText: "8%",
+    food: 2.40,
+    foodText: "Hoolekogu kinnitab",
+    months: 12,
+    monthsNote: "12 (Laeva: 11)",
+    discountMode: "rank",
+    rates: [1.00, 1.00, 0.00, 0.00],
+    discountLabels: ["100%", "100% — soodustuseta", "0% — tasuta", "0% — tasuta"],
+    discountNote: "Vabastus laieneb ka eralastehoiule, kellega on vallal haldusleping.",
+    condText: "Laps + ≥1 vanem registreeritud Tartu vallas.",
+    foodWho: "Lapsevanem 100%",
+    foodCalc: "Tegeliku kohaloleku järgi.",
+  },
+  {
+    id: "kambja-vald",
+    name: "Kambja vald",
+    colorClass: "c-amber",
+    barColor: "#7a4a00",
+    base: 62.02,
+    basisText: "7% töötasu alammäärast",
+    rateText: "7%",
+    food: 2.40,
+    foodText: "Hoolekogu kinnitab",
+    months: 12,
+    monthsNote: "12",
+    discountMode: "rank",
+    rates: [1.00, 1.00, 0.00, 0.00],
+    discountLabels: ["100%", "100% — soodustuseta", "0% — tasuta", "0% — tasuta"],
+    discountNote: "Vabastus laieneb ka valla eelarvest rahastatavatele eralasteaedadele.",
+    condText: "Laps + ≥1 vanem registreeritud Kambja vallas.",
+    foodWho: "Lapsevanem 100%",
+    foodCalc: "Tegeliku kohaloleku järgi.",
+  },
+  {
+    id: "kastre-vald",
+    name: "Kastre vald",
+    colorClass: "c-coral",
+    barColor: "#8a2a10",
+    base: 53.16,
+    basisText: "6% eelmise a. alammäärast (886 €)",
+    rateText: "6%",
+    food: 2.40,
+    foodText: "Hoolekogu kinnitab",
+    months: 11,
+    monthsNote: "11 (juuli tasuta)",
+    discountMode: "noorim",
+    rates: [1.00, 0.50, 0.00, 0.00],
+    discountLabels: ["100% (noorimast)", "50% (vanemast)", "0% — tasuta", "0% — tasuta"],
+    discountNote: "⚠ Soodustuseks peavad MÕLEMAD vanemad (v.a üksikvanem) olema Kastre valla elanikud. Ühe vanema puhul: 10% × 886 = 88,60 €, soodustused ei rakendu.",
+    condText: "Laps + MÕLEMAD vanemad registreeritud Kastre vallas. Üksikvanem = laps + vanem. Avaldus direktorile.",
+    foodWho: "Lapsevanem 100%",
+    foodCalc: "Tegeliku kohaloleku järgi. Juulil osalustasu ei maksta.",
+  },
+  {
+    id: "luunja-vald",
+    name: "Luunja vald",
+    colorClass: "c-pink",
+    barColor: "#7a1a4a",
+    base: 70.88,
+    basisText: "8% töötasu alammäärast",
+    rateText: "8%",
+    food: 2.50,
+    foodText: "2,50 € (Lohkva, alates 01.12.2024)",
+    months: 11,
+    monthsNote: "11 (juuli tasuta)",
+    discountMode: "noorim",
+    rates: [1.00, 0.75, 0.00, 0.00],
+    discountLabels: ["100% (noorimast)", "75% (järgmisest)", "0% — tasuta", "0% — tasuta"],
+    discountNote: "2. lapse soodustus on 25% (mitte 50% nagu Tartus/Kastres). Teise omavalitsuse laps: 10% × 886 = 88,60 €.",
+    condText: "Laps + ≥1 vanem registreeritud Luunja vallas.",
+    foodWho: "Lapsevanem 100%",
+    foodCalc: "Eelmise kuu tegeliku kohaloleku järgi. Erimenüü: 2,80 €/päev.",
+  },
+];
+
+// ─── SUMMARY CARDS ───
+const sc = document.getElementById('summary-cards');
+KOV.forEach(k => {
+  sc.innerHTML += `
+  <div class="card">
+    <div class="card-kov">${k.name}</div>
+    <div class="card-rate">${k.base.toFixed(2).replace('.',',')} €</div>
+    <div class="card-sub">${k.basisText}</div>
+    <span class="card-tag ${k.colorClass}">${k.months} kuud/aastas</span>
+  </div>`;
+});
+
+// ─── RATES TABLE ───
+const rt = document.getElementById('rates-tbody');
+KOV.forEach(k => {
+  rt.innerHTML += `<tr>
+    <td class="ov"><span class="dot" style="background:${k.barColor}"></span>${k.name}</td>
+    <td class="dim">${k.basisText}</td>
+    <td class="r">${k.rateText}</td>
+    <td class="r"><strong>${k.base.toFixed(2).replace('.',',')} €</strong></td>
+    <td class="r">${k.foodText}</td>
+    <td class="r">${k.monthsNote}</td>
+  </tr>`;
+});
+
+// ─── MULTI-CHILD TABLE ───
+let activeN = 1;
+function calcMonthly(k, n) {
+  let total = 0;
+  for (let i = 0; i < n; i++) {
+    const idx = Math.min(i, k.rates.length - 1);
+    total += k.base * k.rates[idx];
+  }
+  return total;
+}
+function calcAnnual(k, n) {
+  const monthly = calcMonthly(k, n);
+  const osalus = monthly * k.months;
+  const food = k.food * 22 * k.months * n;
+  return { monthly, osalus, food, total: osalus + food };
+}
+function fmt(n) { return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, "\u202f") + "\u00a0€"; }
+function fmtM(n) { return n.toFixed(2).replace('.',',') + "\u00a0€"; }
+
+function buildTabs() {
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = '';
+  [1,2,3,4].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (n === activeN ? ' active' : '');
+    btn.textContent = n + (n === 1 ? ' laps' : ' last');
+    btn.onclick = () => { activeN = n; buildTabs(); buildMulti(); };
+    tabs.appendChild(btn);
+  });
+}
+
+function buildMulti() {
+  const n = activeN;
+  const data = KOV.map(k => ({ ...k, ...calcAnnual(k, n) })).sort((a,b) => a.total - b.total);
+  const maxT = data[data.length-1].total;
+  const minT = data[0].total;
+  const maxO = data[data.length-1].osalus;
+  const minO = data[0].osalus;
+
+  const tb = document.getElementById('multi-tbody');
+  tb.innerHTML = '';
+  data.forEach(k => {
+    const isMin = Math.abs(k.total - minT) < 0.01;
+    const isMax = Math.abs(k.total - maxT) < 0.01;
+    const pct = Math.round((k.total / maxT) * 100);
+    tb.innerHTML += `<tr>
+      <td class="ov"><span class="dot" style="background:${k.barColor}"></span>${k.name}</td>
+      <td class="r">${fmtM(k.monthly)}</td>
+      <td class="r ${isMin?'val-best':isMax?'val-worst':''}">${fmt(k.osalus)}</td>
+      <td class="r dim">${fmt(k.food)}</td>
+      <td class="r ${isMin?'val-best':isMax?'val-worst':''}">${fmt(k.total)}</td>
+      <td>
+        <div class="bar-wrap">
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${k.barColor}"></div></div>
+          <span class="bar-lbl">${pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  const diff = document.getElementById('diff-note');
+  const osDiff = maxO - minO;
+  const totDiff = maxT - minT;
+  const cheap = data[0].name;
+  const exp = data[data.length-1].name;
+  diff.innerHTML = `Odavaim: <strong>${cheap}</strong> — kalleim: <strong>${exp}</strong>. Osalustasu erinevus <strong>${fmt(osDiff)}</strong> aastas. Kogukulude (sh toidukulu hinnangul) erinevus <strong>${fmt(totDiff)}</strong> aastas.`;
+}
+
+buildTabs();
+buildMulti();
+
+// ─── DISCOUNT TABLE ───
+const disc = document.getElementById('discount-tbody');
+KOV.forEach(k => {
+  const d = k.discountLabels;
+  function cell(i) {
+    const txt = d[i];
+    const is0 = txt.includes('0%');
+    const is100 = txt.includes('soodustuseta');
+    return `<td class="r ${is0?'val-best':is100?'val-worst':''}">${txt}</td>`;
+  }
+  disc.innerHTML += `<tr>
+    <td class="ov"><span class="dot" style="background:${k.barColor}"></span>${k.name}</td>
+    ${cell(0)}${cell(1)}${cell(2)}${cell(3)}
+    <td class="dim" style="font-size:11px">${k.condText}</td>
+  </tr>`;
+});
+
+// ─── ALERTS ───
+const alertData = [
+  { cls: "alert-coral", title: "⚠ Kastre vald — mõlema vanema registreerimisnõue", text: "Ainus omavalitsus kus soodustus nõuab <strong>mõlema</strong> vanema registreeringut Kastre vallas. Ühe vanema registreerimisel rakendub 10% määr (88,60 €/kuu) ja mitmiklapse soodustused ei kehti. See mõjutab eriti lahus elavaid vanemaid ja uusi elanikke." },
+  { cls: "alert-amber", title: "⚠ Tartu vald ja Kambja vald — 2. lapsele soodustust pole", text: "Erinevalt teistest omavalitsustest ei kehti Tartu vallas ega Kambja vallas teise lapse puhul ühtegi soodustust. Kaks last maksavad täishinda. Soodustus rakendub alles <strong>kolmandast lapsest</strong>." },
+  { cls: "alert-pink", title: "Luunja vald — 2. lapse soodustus väiksem", text: "Luunjas on teise lapse soodustus 25% (maksab 75% täishinnast), samas kui Tartus ja Kastres on see 50%. Kolmas ja järgnev laps on kõikjal tasuta." },
+  { cls: "alert-blue", title: "Tartu linn — 4+ lapse eelnõu volikogus (märts 2026)", text: "Linnavalitsus saatis volikokku eelnõu, millega vabastataks kohatasust kõik lapsed peredes, kus on vähemalt 4 alla 20-aastast last (vanemad ja lapsed registreeritud Tartu linnas). <strong>Ei ole jõustunud.</strong>" },
+  { cls: "alert-green", title: "Töötasu alammäära tõus 01.04.2026 → 946 €/kuu", text: "Tartu vald (8%) → 75,68 €; Kambja vald (7%) → 66,22 €; Luunja vald (8%) → 75,68 €. Kastre vald kasutab <em>eelmise</em> aasta alammäära, seega muutus kajastub alles 2027 algusest. Tartu linnas muutus puudub (fikseeritud 81 €)." },
+];
+const al = document.getElementById('alerts');
+alertData.forEach(a => {
+  al.innerHTML += `<div class="alert ${a.cls}"><strong>${a.title}</strong>${a.text}</div>`;
+});
+
+// ─── FOOD TABLE ───
+const ft = document.getElementById('food-tbody');
+KOV.forEach(k => {
+  ft.innerHTML += `<tr>
+    <td class="ov"><span class="dot" style="background:${k.barColor}"></span>${k.name}</td>
+    <td>${k.foodWho}</td>
+    <td class="r">${k.foodText}</td>
+    <td class="dim" style="font-size:12px">${k.foodCalc}</td>
+  </tr>`;
+});
+</script>
+</body>
+</html>
